@@ -3,13 +3,25 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
 
-from .models import User
+from .models import User, Listings, Bid
 
+class BidForm (forms.Form):
+    bid_value = forms.IntegerField(label="", widget=forms.TextInput(attrs={
+        "placeholder": "Place bid"
+    }))
 
 def index(request):
-    return render(request, "auctions/index.html")
+    l= Listings.objects.all().first()
 
+    return render(request, "auctions/index.html", {
+        "posts": Listings.objects.all(),
+        "BidForm": BidForm(),
+        "bids": Bid.objects.all()
+    })
+def place_bid(request):
+    return render(request, "auctions/index.html")
 
 def login_view(request):
     if request.method == "POST":

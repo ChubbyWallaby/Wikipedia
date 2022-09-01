@@ -2,6 +2,25 @@
 
 {% block body %}
     <h2>Active Listings</h2>
+    {% for post in posts %}
+    <div>
+        {{ post.title }}
+        <br>
+        <img src="{{post.image_link}}">
+        <br>
+        <p class="same_line">{{ post.description }}</p>
+        <p class="same_line"> {{post.initial_value }}€</p>
+        <form action="{% url 'place_bid' %}" method = "post">
 
-    TODO
+            <p>Current bid is: {{ bids.get(id=post.id).value }}</p>
+        </form>
+    </div>
+    <div>
+        <Strong>Details</Strong>
+        <ul>
+            <li>Posted By: {{post.user}}</li>
+            <li>Category: {{post.category}}</li>
+        </ul>
+    </div>
+    {% endfor %}
 {% endblock %}
